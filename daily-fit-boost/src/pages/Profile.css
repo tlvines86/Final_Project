@@ -1,0 +1,43 @@
+.profile {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: sans-serif;
+}
+
+.profile__title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.profile__section {
+  margin-bottom: 2rem;
+}
+
+.profile__section-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.25rem;
+}
+
+.profile__quote {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.profile__quote-author {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.profile__song {
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
