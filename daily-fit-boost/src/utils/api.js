@@ -1,7 +1,10 @@
 import { FALLBACK_QUOTES, STATIC_SONGS } from "./config";
 
 export function fetchZenQuote() {
-  const url = `https://zenquotes.io/api/random?cb=${Date.now()}`;
+  const url = `https://api.allorigins.win/raw?url=${encodeURIComponent(
+    `https://zenquotes.io/api/random?cb=${Date.now()}`
+  )}`;
+
   return fetch(url)
     .then((res) => {
       if (!res.ok) throw new Error("Network response was not ok");

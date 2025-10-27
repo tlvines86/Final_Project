@@ -1,3 +1,6 @@
+export const ZEN_QUOTES_BASE_URL = "https://zenquotes.io/api/random";
+export const CORS_PROXY = "https://api.allorigins.win/raw?url=";
+
 export const FALLBACK_QUOTES = [
   { quote: "Push yourself, because no one else will.", author: "Unknown" },
   {
