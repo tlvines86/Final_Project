@@ -1,0 +1,4 @@
+[build]
+  base = "daily-fit-boost"
+  command = "npm run build"
+  publish = "build"    
