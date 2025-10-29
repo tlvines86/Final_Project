@@ -1,17 +1,39 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Header.css";
 
-function Header() {
+function Header({ user, onLoginClick, onLogoutClick }) {
   return (
     <header className="header">
       <nav className="header__nav">
-        <Link className="header__link" to="/">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "header__link active" : "header__link"
+          }
+        >
           Home
-        </Link>
-        <Link className="header__link" to="/profile">
-          Profile
-        </Link>
+        </NavLink>
+
+        {user ? (
+          <>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive ? "header__link active" : "header__link"
+              }
+            >
+              Profile
+            </NavLink>
+            <button className="header__btn" onClick={onLogoutClick}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <button className="header__btn" onClick={onLoginClick}>
+            Login / Sign Up
+          </button>
+        )}
       </nav>
     </header>
   );

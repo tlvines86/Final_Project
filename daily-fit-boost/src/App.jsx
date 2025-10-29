@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Toast from "./components/Toast/Toast";
 import { fetchZenQuote, fetchWorkoutSongs } from "./utils/api";
+import { FALLBACK_QUOTES } from "./utils/config";
+import AuthModal from "./components/AuthModal/AuthModal";
 import "./App.css";
 
 function App() {
@@ -15,20 +17,32 @@ function App() {
   const [loadingSongs, setLoadingSongs] = useState(true);
   const [toastMessage, setToastMessage] = useState("");
 
+  const [user, setUser] = useState(null);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+
   const getNewQuote = () => {
     setLoadingQuote(true);
-    fetchZenQuote().then((data) => {
-      setQuote(data);
-      setLoadingQuote(false);
-    });
+    fetchZenQuote()
+      .then((data) => setQuote(data))
+      .catch((error) => {
+        console.error("Error fetching quote:", error);
+        const fallback =
+          FALLBACK_QUOTES[Math.floor(Math.random() * FALLBACK_QUOTES.length)];
+        setQuote(fallback);
+        setToastMessage("⚠️ Could not fetch quote. Using fallback.");
+      })
+      .finally(() => setLoadingQuote(false));
   };
 
   const getSongs = () => {
     setLoadingSongs(true);
-    fetchWorkoutSongs().then((data) => {
-      setSongs(data);
-      setLoadingSongs(false);
-    });
+    fetchWorkoutSongs()
+      .then((data) => setSongs(data))
+      .catch((error) => {
+        console.error("Error fetching songs:", error);
+        setToastMessage("⚠️ Could not fetch songs. Try again later.");
+      })
+      .finally(() => setLoadingSongs(false));
   };
 
   const saveQuote = () => {
@@ -63,7 +77,12 @@ function App() {
   return (
     <div className="app">
       <Router>
-        <Header />
+        <Header
+          user={user}
+          onLoginClick={() => setAuthModalOpen(true)}
+          onLogoutClick={() => setUser(null)}
+        />
+
         <Main>
           <Routes>
             <Route
@@ -80,13 +99,19 @@ function App() {
                 />
               }
             />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={user ? <Profile /> : <Home />} />
           </Routes>
         </Main>
 
         {toastMessage && (
           <Toast message={toastMessage} onClose={() => setToastMessage("")} />
         )}
+
+        <AuthModal
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+          onAuthSuccess={(u) => setUser(u)}
+        />
       </Router>
     </div>
   );
